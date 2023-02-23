@@ -14,8 +14,10 @@ app.use(bodyParser.json());
 mongoose.set("strictQuery", true);
 // Define the schema for the data you want to store
 const myDataSchema = new mongoose.Schema({
-  name: String,
-  email: String,
+  name: { type: String, default: "" },
+  email: { type: String, default: "" },
+  date: String,
+  time: Number,
 });
 
 const myNewCollSchema = new mongoose.Schema({
