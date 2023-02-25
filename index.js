@@ -109,14 +109,14 @@ app.post("/submit-form", (req, res) => {
     .catch((error) => res.status(500).json({ message: error.message }));
 });
 
-app.post("/submit-form-all", (req, res) => {
-  console.log("/submit-form-all: ", req.body);
-  const myColl = new MyColl(req.body);
-  myColl
-    .save()
-    .then((data) => res.json(data))
-    .catch((error) => res.status(500).json({ message: error.message }));
-});
+// app.post("/submit-form-all", (req, res) => {
+//   console.log("/submit-form-all: ", req.body);
+//   const myColl = new MyColl(req.body);
+//   myColl
+//     .save()
+//     .then((data) => res.json(data))
+//     .catch((error) => res.status(500).json({ message: error.message }));
+// });
 
 // Start the server
 app.listen(3001, () => console.log("Server started on port 3001"));
