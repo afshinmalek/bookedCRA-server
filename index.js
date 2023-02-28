@@ -15,9 +15,11 @@ mongoose.set("strictQuery", true);
 const myDataSchema = new mongoose.Schema({
   name: { type: String, default: "" },
   email: { type: String, default: "" },
-  date: String,
-  time: Number,
+  date: { type: String, required: true },
+  time: { type: Number, required: true },
 });
+
+myDataSchema.index({ date: 1, time: 1 }, { unique: true });
 
 const myNewCollSchema = new mongoose.Schema({
   name: { type: String, default: "" },
@@ -99,13 +101,19 @@ db.once("open", async () => {
 
 // Define the route handler for the form submission
 app.post("/submit-form", (req, res) => {
-  console.log("/submit-form: ", req.body);
-
   const myData = new MyData(req.body);
-  myData
-    .save()
-    .then((data) => res.json(data))
-    .catch((error) => res.status(500).json({ message: error.message }));
+  myData.save((err, data) => {
+    if (err && err.code === 11000) {
+      console.log("errorrrrrrr");
+      return res
+        .status(409)
+        .json({ message: "Combination of date and time already exists" });
+    }
+    if (err) {
+      return res.status(500).json({ message: err.message });
+    }
+    res.json(data);
+  });
 });
 
 //Define an endpoint to retrieve data from the MongoDB database
@@ -113,7 +121,7 @@ app.get("/data", (req, res) => {
   MyData.find()
     .then((data) => {
       res.json(data);
-      console.log("/data  ********************", data);
+      console.log("/data  ********************");
     })
     .catch((error) => res.status(500).json({ message: error.message }));
 });
@@ -121,13 +129,17 @@ app.get("/data", (req, res) => {
 app.get("/data/:date", (req, res) => {
   const date = moment(req.params.date).startOf("day").toDate();
   console.log("/date:date1  ", date);
-  MyData.find({ date: date })
+  MyData.find({ date: date.toDateString() })
     .then((data) => {
+      console.log("date:date1.5 ****************", JSON.stringify(data));
       res.json(data);
       console.log("/data/:date2  ********************", data);
     })
 
-    .catch((error) => res.status(500).json({ message: error.message }));
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ message: error.message });
+    });
 });
 
 // app.get('/users', (req, res) => {
