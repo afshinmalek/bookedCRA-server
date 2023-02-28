@@ -9,8 +9,7 @@ dotenv.config();
 const app = express();
 app.use(cors());
 
-app.use(bodyParser.json());
-
+app.use(express.json());
 mongoose.set("strictQuery", true);
 // Define the schema for the data you want to store
 const myDataSchema = new mongoose.Schema({
@@ -109,13 +108,37 @@ app.post("/submit-form", (req, res) => {
     .catch((error) => res.status(500).json({ message: error.message }));
 });
 
-// app.post("/submit-form-all", (req, res) => {
-//   console.log("/submit-form-all: ", req.body);
-//   const myColl = new MyColl(req.body);
-//   myColl
-//     .save()
-//     .then((data) => res.json(data))
-//     .catch((error) => res.status(500).json({ message: error.message }));
+//Define an endpoint to retrieve data from the MongoDB database
+app.get("/data", (req, res) => {
+  MyData.find()
+    .then((data) => {
+      res.json(data);
+      console.log("/data  ********************", data);
+    })
+    .catch((error) => res.status(500).json({ message: error.message }));
+});
+
+app.get("/data/:date", (req, res) => {
+  const date = moment(req.params.date).startOf("day").toDate();
+  console.log("/date:date1  ", date);
+  MyData.find({ date: date })
+    .then((data) => {
+      res.json(data);
+      console.log("/data/:date2  ********************", data);
+    })
+
+    .catch((error) => res.status(500).json({ message: error.message }));
+});
+
+// app.get('/users', (req, res) => {
+//   axios.get('http://localhost:3000/api/users')
+//     .then(response => {
+//       res.send(response.data);
+//     })
+//     .catch(error => {
+//       console.log(error);
+//       res.status(500).send('Error retrieving users from MongoDB');
+//     });
 // });
 
 // Start the server
