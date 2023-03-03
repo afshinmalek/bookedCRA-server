@@ -109,10 +109,7 @@ app.post("/submit-form", (req, res) => {
         .status(409)
         .json({ message: "Combination of date and time already exists" });
     }
-    if (err) {
-      return res.status(500).json({ message: err.message });
-    }
-    res.json(data);
+    return res.json({ message: "Data added successfully" });
   });
 });
 
