@@ -1,5 +1,4 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const moment = require("moment");
 const dotenv = require("dotenv");
@@ -64,39 +63,6 @@ db.once("open", async () => {
     .map((db) => db.name);
 
   console.log("Clusters:", clusters);
-
-  // generate the documents for the next 30 days
-  // const startDate = moment("2023-02-22").startOf("day").add(9, "hours");
-  // const endDate = startDate.clone().add(30, "days");
-
-  // const documents = [];
-
-  // for (let date = startDate; date.isBefore(endDate); date.add(1, "day")) {
-  //   for (
-  //     let time = date.clone().startOf("day");
-  //     time.isBefore(date.clone().startOf("day").add(8, "hours"));
-  //     time.add(1, "hour")
-  //   ) {
-  //     documents.push({
-  //       name: "",
-  //       email: "",
-  //       date: date.toDate(),
-  //       time: time.toDate(),
-  //       available: true,
-  //     });
-  //   }
-  // }
-
-  // // save the documents to the collection
-  // MyNewCollModel.insertMany(documents)
-  //   .then(() => {
-  //     console.log("Documents inserted successfully!");
-  //     mongoose.disconnect();
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //     mongoose.disconnect();
-  //   });
 });
 
 // Define the route handler for the form submission
@@ -139,24 +105,5 @@ app.get("/data/:date", (req, res) => {
     });
 });
 
-// app.get('/users', (req, res) => {
-//   axios.get('http://localhost:3000/api/users')
-//     .then(response => {
-//       res.send(response.data);
-//     })
-//     .catch(error => {
-//       console.log(error);
-//       res.status(500).send('Error retrieving users from MongoDB');
-//     });
-// });
-
 // Start the server
 app.listen(3001, () => console.log("Server started on port 3001"));
-
-/////////////////////////////////////////////////////////
-
-// define the schema
-
-// create the model
-
-// generate the documents for the next 30 days
