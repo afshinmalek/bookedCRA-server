@@ -71,9 +71,9 @@ app.post("/submit-form", (req, res) => {
   myData.save((err, data) => {
     if (err && err.code === 11000) {
       console.log("errorrrrrrr");
-      return res
-        .status(409)
-        .json({ message: "Combination of date and time already exists" });
+      return res.json({
+        message: "Combination of date and time already exists",
+      });
     }
     return res.json({ message: "Data added successfully" });
   });
@@ -90,9 +90,15 @@ app.get("/data", (req, res) => {
 });
 
 app.get("/data/:date", (req, res) => {
-  const date = moment(req.params.date).startOf("day").toDate();
+  const timestamp = parseInt(req.params.date);
+  //const date = req.params.date;
+
+  const date = new Date(timestamp);
+  const dateStr = date.toDateString();
   console.log("/date:date1  ", date);
-  MyData.find({ date: date.toDateString() })
+
+  console.log("/date:date1  ", dateStr);
+  MyData.find({ date: dateStr })
     .then((data) => {
       console.log("date:date1.5 ****************", JSON.stringify(data));
       res.json(data);
