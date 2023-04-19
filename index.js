@@ -3,8 +3,14 @@ const mongoose = require("mongoose");
 const moment = require("moment");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const nodemailer = require("nodemailer");
 
 dotenv.config();
+
+const sgMail = require("@sendgrid/mail");
+const sgKey = process.env.SENDGRID;
+sgMail.setApiKey(sgKey);
+
 const app = express();
 app.use(cors());
 
@@ -15,7 +21,7 @@ const myDataSchema = new mongoose.Schema({
   name: { type: String, default: "" },
   email: { type: String, default: "" },
   date: { type: String, required: true },
-  time: { type: Number, required: true },
+  time: { type: Number, required: [true, "Please provide the time"] },
 });
 
 myDataSchema.index({ date: 1, time: 1 }, { unique: true });
@@ -68,6 +74,16 @@ db.once("open", async () => {
 // Define the route handler for the form submission
 app.post("/submit-form", (req, res) => {
   const myData = new MyData(req.body);
+  if (!req.body.time) {
+    return res.json({ message: "Please provide the time!" });
+  }
+  if (!req.body.name) {
+    return res.json({ message: "Please provide a name!" });
+  }
+  if (!req.body.email) {
+    return res.json({ message: "Please provide an email!" });
+  }
+
   myData.save((err, data) => {
     if (err && err.code === 11000) {
       console.log("errorrrrrrr");
@@ -75,6 +91,55 @@ app.post("/submit-form", (req, res) => {
         message: "Combination of date and time already exists",
       });
     }
+
+    // send email
+    const msg = {
+      to: req.body.email,
+      from: "your.confirmation.email.22@gmail.com",
+      subject: "Appointment Confirmation",
+      text: "Your appointment has been confirmed",
+      html: "<strong>Your appointment has been confirmed</strong>",
+    };
+
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log("Email sent");
+      })
+      .catch((error) => {
+        console.log("gmail error");
+        console.error(error);
+      });
+
+    //////////////////
+    async function main() {
+      // Generate test SMTP service account from ethereal.email
+      // Only needed if you don't have a real mail account for testing
+
+      // create reusable transporter object using the default SMTP transport
+      let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: "your.confirmation.email.22@gmail.com", // generated ethereal user
+          pass: process.env.GMAIL, // generated ethereal password
+        },
+      });
+
+      // send mail with defined transport object
+      let info = await transporter.sendMail({
+        from: '"Fred Foo 👻" <your.confirmation.email.22@gamil.com>', // sender address
+        to: req.body.email, // list of receivers
+        subject: "Hello ✔", // Subject line
+        text: "Hello world?", // plain text body
+        html: "<b>Hello world?</b>", // html body
+      });
+
+      console.log("Message sent from NNNNNNNN: %s", info.messageId);
+    }
+
+    main().catch(console.error);
+
+    //////////////////
     return res.json({ message: "Data added successfully" });
   });
 });
