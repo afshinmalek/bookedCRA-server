@@ -91,6 +91,12 @@ app.post("/submit-form", (req, res) => {
         message: "Combination of date and time already exists",
       });
     }
+    console.log("daaaaaaaaaaaaaattttttttttaaaaa : ", data);
+    console.log("daaaaaaaaaaaaaattttttttttaaaaaIIIIIDDDDD : ", data._id);
+    console.log("daaaaaaaatttttttaaaaaIIIDDSRTING : ", String(data._id));
+    let strID = String(data._id);
+    console.log("link : ", "http://localhost:3000/cancel?documentId=" + strID);
+    let link = "http://localhost:3000/cancel?documentId=" + strID;
 
     // send email
     const msg = {
@@ -126,13 +132,82 @@ app.post("/submit-form", (req, res) => {
       });
 
       // send mail with defined transport object
-      let info = await transporter.sendMail({
-        from: '"Fred Foo 👻" <your.confirmation.email.22@gamil.com>', // sender address
-        to: req.body.email, // list of receivers
-        subject: "Hello ✔", // Subject line
-        text: "Hello world?", // plain text body
-        html: "<b>Hello world?</b>", // html body
-      });
+
+      let info = await transporter
+        .sendMail({
+          from: '"Fred Foo 👻" <your.confirmation.email.22@gamil.com>', // sender address
+          to: req.body.email, // list of receivers
+          subject: "Hello ✔", // Subject line
+          text: "Hello world?", // plain text body
+          html: `<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <title>Appointment Confirmation</title>
+            <style type="text/css">
+            body {
+              font-family: Arial, sans-serif;
+              font-size: 16px;
+              line-height: 1.5;
+              color: #333333;
+              background-color: #f4f4f4;
+            }
+            .container {
+              margin: 0 auto;
+              max-width: 600px;
+              padding: 20px;
+              background-color: #ffffff;
+              border-radius: 8px;
+              box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+            }
+            .title {
+              font-size: 24px;
+              margin-bottom: 20px;
+              text-align: center;
+            }
+            .message {
+              margin-bottom: 30px;
+              text-align: center;
+            }
+            .button {
+              display: block;
+              margin: 0 auto;
+              margin-bottom: 5px;
+              padding: 14px 28px;
+              background-color: #007bff;
+              color: #ffffff;
+              font-size: 18px;
+              font-weight: bold;
+              text-align: center;
+              text-decoration: none;
+              border-radius: 6px;
+              box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+              transition: all 0.3s ease-in-out;
+            }
+            .button:hover {
+              background-color: #0056b3;
+              box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+              transform: translateY(-2px);
+            }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1 class="title">Appointment Confirmation</h1>
+                <p class="message">Your appointment has been confirmed!</p>
+                <p class="message">Time : ${data.time}</p>
+                <p class="message">Date : ${data.date}</p>
+
+                <a class="button" href=${link} >Reschedule</a>
+                <a class="button" href="http://localhost:3000/cancel?documentId="${strID}>Cancel</a>
+
+            </div>
+        </body>
+        </html>`, // html body
+        })
+        .catch((error) => {
+          console.error(error);
+        });
 
       console.log("Message sent from NNNNNNNN: %s", info.messageId);
     }
@@ -174,6 +249,22 @@ app.get("/data/:date", (req, res) => {
       console.error(error);
       res.status(500).json({ message: error.message });
     });
+});
+
+function deleteDocument(documentId) {
+  MyData.findByIdAndDelete({ _id: documentId }, function (err, result) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(result);
+    }
+  });
+}
+
+app.get("/cancel", function (req, res) {
+  var documentId = req.query.documentId;
+  deleteDocument(documentId);
+  res.send("Document deleted");
 });
 
 // Start the server
