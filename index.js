@@ -96,7 +96,7 @@ app.post("/submit-form", (req, res) => {
     console.log("daaaaaaaatttttttaaaaaIIIDDSRTING : ", String(data._id));
     let strID = String(data._id);
     console.log("link : ", "http://localhost:3000/cancel?documentId=" + strID);
-    let link = "http://localhost:3000/cancel?documentId=" + strID;
+    let link = "http://localhost:3001/cancel?documentId=" + strID;
 
     // send email
     const msg = {
@@ -197,9 +197,7 @@ app.post("/submit-form", (req, res) => {
                 <p class="message">Your appointment has been confirmed!</p>
                 <p class="message">Time : ${data.time}</p>
                 <p class="message">Date : ${data.date}</p>
-
-                <a class="button" href=${link} >Reschedule</a>
-                <a class="button" href="http://localhost:3000/cancel?documentId="${strID}>Cancel</a>
+                <a class="button" href=${link} >Cancel</a>
 
             </div>
         </body>
