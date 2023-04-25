@@ -96,23 +96,23 @@ app.post("/submit-form", (req, res) => {
     let link = "http://localhost:3001/cancel?documentId=" + strID;
 
     // send email
-    const msg = {
-      to: req.body.email,
-      from: "your.confirmation.email.22@gmail.com",
-      subject: "Appointment Confirmation",
-      text: "Your appointment has been confirmed",
-      html: "<strong>Your appointment has been confirmed</strong>",
-    };
+    // const msg = {
+    //   to: req.body.email,
+    //   from: "your.confirmation.email.22@gmail.com",
+    //   subject: "Appointment Confirmation",
+    //   text: "Your appointment has been confirmed",
+    //   html: "<strong>Your appointment has been confirmed</strong>",
+    // };
 
-    sgMail
-      .send(msg)
-      .then(() => {
-        console.log("Email sent");
-      })
-      .catch((error) => {
-        console.log("gmail error");
-        console.error(error);
-      });
+    // sgMail
+    //   .send(msg)
+    //   .then(() => {
+    //     console.log("Email sent");
+    //   })
+    //   .catch((error) => {
+    //     console.log("gmail error");
+    //     console.error(error);
+    //   });
 
     //////////////////
     async function main() {
