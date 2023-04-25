@@ -91,11 +91,8 @@ app.post("/submit-form", (req, res) => {
         message: "Combination of date and time already exists",
       });
     }
-    console.log("daaaaaaaaaaaaaattttttttttaaaaa : ", data);
-    console.log("daaaaaaaaaaaaaattttttttttaaaaaIIIIIDDDDD : ", data._id);
-    console.log("daaaaaaaatttttttaaaaaIIIDDSRTING : ", String(data._id));
+
     let strID = String(data._id);
-    console.log("link : ", "http://localhost:3000/cancel?documentId=" + strID);
     let link = "http://localhost:3001/cancel?documentId=" + strID;
 
     // send email
@@ -149,25 +146,28 @@ app.post("/submit-form", (req, res) => {
               font-family: Arial, sans-serif;
               font-size: 16px;
               line-height: 1.5;
-              color: #333333;
-              background-color: #f4f4f4;
+              color: white;
+              background-color: black;
             }
             .container {
               margin: 0 auto;
               max-width: 600px;
               padding: 20px;
-              background-color: #ffffff;
+              background-color: black;
               border-radius: 8px;
               box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+              color: white;
             }
             .title {
               font-size: 24px;
               margin-bottom: 20px;
               text-align: center;
+              color: white;
             }
             .message {
               margin-bottom: 30px;
               text-align: center;
+              color:white;
             }
             .button {
               display: block;
@@ -175,7 +175,7 @@ app.post("/submit-form", (req, res) => {
               margin-bottom: 5px;
               padding: 14px 28px;
               background-color: #007bff;
-              color: #ffffff;
+              color: white;
               font-size: 18px;
               font-weight: bold;
               text-align: center;
@@ -188,6 +188,7 @@ app.post("/submit-form", (req, res) => {
               background-color: #0056b3;
               box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
               transform: translateY(-2px);
+              color:white;
             }
             </style>
         </head>
@@ -262,7 +263,47 @@ function deleteDocument(documentId) {
 app.get("/cancel", function (req, res) {
   var documentId = req.query.documentId;
   deleteDocument(documentId);
-  res.send("Document deleted");
+
+  const html = `
+  <html>
+    <head>
+      <title>Cancel Message</title>
+      <style>
+        body{
+          background-color: black;
+        }
+        .cancel-message {
+          position: absolute;
+          top: 33%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 200px;
+          width: 400px;
+          background-color: #007bff;
+          color: white;
+          border-radius: 8px;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .cancel-message h2 {
+          font-family: fantasy , Arial, sans-serif;
+          font-size: 1.5rem;
+          text-align: center;
+        }
+        
+      </style>
+    </head>
+    <body>
+      <div class="cancel-message">
+        <h2>Your Appointment has been Canceled!</h2>
+      </div>
+    </body>
+  </html>
+  `;
+  res.send(html);
 });
 
 // Start the server
