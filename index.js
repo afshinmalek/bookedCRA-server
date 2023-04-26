@@ -92,9 +92,8 @@ app.post("/submit-form", (req, res) => {
       });
     }
     let appUrl = process.env.APP_URL;
-    let appPort = process.env.APP_PORT;
     let strID = String(data._id);
-    let link = appUrl + appPort + "/cancel?documentId=" + strID;
+    let link = appUrl + "/cancel?documentId=" + strID;
 
     // send email
     // const msg = {
@@ -308,5 +307,6 @@ app.get("/cancel", function (req, res) {
 });
 
 // Start the server
-let appPortNum = process.env.APP_PORT_NUM;
-app.listen(appPortNum, () => console.log("Server started on port 3001"));
+app.listen(process.env.PORT, () =>
+  console.log(`Server started on port ${process.env.PORT}`)
+);
