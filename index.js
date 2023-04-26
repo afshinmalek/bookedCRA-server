@@ -12,7 +12,11 @@ const sgKey = process.env.SENDGRID;
 sgMail.setApiKey(sgKey);
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://book-it.herokuapp.com",
+  })
+);
 
 app.use(express.json());
 mongoose.set("strictQuery", true);
