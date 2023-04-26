@@ -14,7 +14,10 @@ sgMail.setApiKey(sgKey);
 const app = express();
 app.use(
   cors({
-    origin: "https://book-it.herokuapp.com",
+    origin: [
+      "https://book-it.herokuapp.com",
+      "https://book-it-backend.herokuapp.com/",
+    ],
   })
 );
 
