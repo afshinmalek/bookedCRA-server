@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "build": "npm install && npm prune --production"
+    "build": "npm install && npm prune --production",
+    "deploy": "npm run build && git add . && git commit -m \"$npm_config_message\" && git push heroku master"
   },
   "author": "",
   "license": "ISC",
@@ -18,7 +19,9 @@
     "express": "^4.18.2",
     "moment": "^2.29.4",
     "mongoose": "^6.9.2",
-    "nodemailer": "^6.9.1"
+    "nodemailer": "^6.9.1",
+    "passport": "^0.6.0",
+    "passport-google-oauth20": "^2.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
