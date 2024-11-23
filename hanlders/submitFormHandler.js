@@ -1,7 +1,6 @@
 const { MyData } = require("../database");
 const emailTemplate = require("../emailTemplate");
 const { sendEmail } = require("../email");
-const updateResultHtml = require("../emailBooking");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -27,17 +26,10 @@ const submitFormHandler = async (req, res) => {
 
     const sendConfirmationEmail = async (emailData) => {
       try {
-        const resultHtml = await updateResultHtml(emailData);
-
         const to = emailData.email;
         const subject = "Appointment Confirmation";
         const text = "Your appointment has been confirmed.";
-        await sendEmail(
-          to,
-          subject,
-          text,
-          emailTemplate(data, link, resultHtml)
-        );
+        await sendEmail(to, subject, text, emailTemplate(data, link));
 
         console.log("Confirmation email sent to:", to);
       } catch (error) {

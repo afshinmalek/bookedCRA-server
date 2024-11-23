@@ -1,0 +1,28 @@
+
+// modify the code so it uses this updated instruction
+// use these technologies : vscode text editor, node,js, react, express,vscode error messages, google chrome browser errors console, any npm package you like
+// i want to build a MERN stack app , that follows these steps to build a web app
+// 1- let goal = the prompt ; app gets a prompt from an input field as its goal
+// 2- create steps = [ ]; it will breakdown the goal to smaller steps, parts , files and folders, it should use open AI api to ask chat gpt to : breakdown goal into smaller steps/goals until the step is so small that ,you can write it in a single functionality function, add all steps to steps array, this is an example of steps array ; steps = [{goal: ""},{goal:""},...]
+
+
+
+
+class Node (){
+  constructor(value){
+    this.value = value;
+    this.children = [];
+  }
+  add(node){
+    this.children.push(node)
+  }
+}
+
+class tree(){
+  constructor(root){
+    this.root = new Node(root);
+  }
+}
+
+
+

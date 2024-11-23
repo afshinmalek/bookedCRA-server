@@ -9,7 +9,7 @@ const cancelHandler = (req, res) => {
   res.send(html);
 };
 
-function deleteDocument(documentId) {
+function deleteDocument(documentId) { 
   MyData.findByIdAndDelete({ _id: documentId }, function (err, result) {
     if (err) {
       console.log(err);

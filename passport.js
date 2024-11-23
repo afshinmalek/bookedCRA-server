@@ -14,7 +14,13 @@ passport.use(
     (accessToken, refreshToken, profile, done) => {
       // Process the user profile data or store it in your database
       // You can customize this callback function based on your app's requirements
-      done(null, profile);
+      const user = {
+        id: profile.id,
+        name: profile.displayName,
+        email: profile.emails[0].value,
+        // Add other relevant user data if needed
+      };
+      return done(null, user);
     }
   )
 );

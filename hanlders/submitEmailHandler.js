@@ -12,11 +12,8 @@ const submitEmailHandler = async (req, res) => {
     let { email, name, date, time } = req.params;
 
     date = date.replace("%20", " ");
-
     const saveMe = { email, name, date, time };
-    console.log("************** saveME *************", saveMe);
     const myData = new MyData(saveMe);
-
     const data = await myData.save();
 
     let appUrl = process.env.APP_URL;

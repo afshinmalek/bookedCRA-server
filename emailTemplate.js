@@ -1,4 +1,4 @@
-const generateConfirmationHtml = (data, link, resultHtml) => `
+const generateConfirmationHtml = (data, link) => `
 <!DOCTYPE html>
 <html>
   <head>
@@ -89,11 +89,7 @@ const generateConfirmationHtml = (data, link, resultHtml) => `
         <a class="button" href=${link} >Cancel</a>
 
     </div>
-    <div class="container2">
-
-    ${resultHtml || ""}
-
-    </div>
+    
 
   </body>
 </html>`;
