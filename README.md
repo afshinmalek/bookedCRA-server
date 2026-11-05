@@ -1,6 +1,6 @@
 <div align="center">
 
-# 📅 BookMe — Booking App (Server)
+# 📅 BookMe - Booking App (Server)
 
 ### Express · MongoDB · Passport Google OAuth · Nodemailer
 
@@ -50,7 +50,7 @@ npm start
 
 ## 🔑 Environment variables
 
-See `.env.example`. Never commit a real `.env` file — it is ignored by `.gitignore`.
+See `.env.example`. Never commit a real `.env` file - it is ignored by `.gitignore`.
 
 | Variable | Used for |
 | --- | --- |
